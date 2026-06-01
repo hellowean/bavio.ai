@@ -1,0 +1,112 @@
+{
+  "name": "bavio-desktop",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Bavio AI Voice Platform desktop dashboard",
+  "author": {
+    "name": "Bavio",
+    "email": "support@bavio.ai"
+  },
+  "homepage": "https://bavio.ai",
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run clean:electron && tsc -b && vite build && tsc -p tsconfig.electron.json",
+    "clean:electron": "node -e \"require('node:fs').rmSync('dist-electron', { recursive: true, force: true })\"",
+    "electron:dev": "concurrently -k -n renderer,electron-tsc,electron -c cyan,magenta,green \"vite\" \"tsc -p tsconfig.electron.json --watch --preserveWatchOutput\" \"wait-on tcp:5173 dist-electron/main.js && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
+    "electron:build": "npm run electron:build:win",
+    "electron:build:win": "npm run build && electron-builder --win nsis --x64",
+    "electron:pack:win": "npm run build && electron-builder --win --x64 --dir",
+    "dist": "npm run electron:build:win",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "@tanstack/react-query": "^5.100.14",
+    "@tanstack/react-table": "^8.21.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.3.0",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7.16.0",
+    "recharts": "^3.8.1",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss-animate": "^1.0.7",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.12.3",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.5.0",
+    "concurrently": "^10.0.0",
+    "cross-env": "^10.1.0",
+    "electron": "^42.3.0",
+    "electron-builder": "^26.8.1",
+    "eslint": "^10.3.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.6.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.59.2",
+    "vite": "^8.0.12",
+    "wait-on": "^9.0.10"
+  },
+  "build": {
+    "appId": "com.bavio.desktop",
+    "productName": "Bavio",
+    "copyright": "Copyright © 2026 Bavio. All rights reserved.",
+    "directories": {
+      "buildResources": "build",
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build/icon.png",
+        "to": "icon.png"
+      }
+    ],
+    "win": {
+      "artifactName": "${productName} Setup ${version}.${ext}",
+      "executableName": "Bavio",
+      "icon": "icon.ico",
+      "legalTrademarks": "Bavio",
+      "requestedExecutionLevel": "asInvoker",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "${productName} Setup ${version}.${ext}",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "icon.ico",
+      "oneClick": false,
+      "perMachine": false,
+      "shortcutName": "Bavio",
+      "uninstallerIcon": "icon.ico",
+      "uninstallDisplayName": "Bavio ${version}"
+    }
+  }
+}
