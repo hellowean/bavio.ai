@@ -61,10 +61,12 @@ export function Sidebar() {
       className="fixed inset-y-0 left-0 z-40 flex w-[248px] flex-col border-r border-[var(--dashboard-border)] bg-[color:var(--dashboard-sidebar)]/98 shadow-[14px_0_36px_rgba(0,0,0,0.14)]"
     >
       <div className="flex h-[108px] items-center gap-3 px-5">
-        <Logo breathe={false} rotateOnScroll size={32} />
+        <Logo size={32} />
         <div>
           <p className="text-lg font-semibold leading-none tracking-normal text-[var(--dashboard-text)]">{APP_NAME}</p>
-          <p className="mt-1.5 text-xs font-medium text-[var(--dashboard-muted)]">AI Voice Platform</p>
+          <p className="mt-1.5 text-[11px] font-medium leading-4 text-[var(--dashboard-muted)]">
+            Voice AI Infrastructure
+          </p>
         </div>
       </div>
 

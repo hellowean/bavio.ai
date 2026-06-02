@@ -1,10 +1,11 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Moon, Search, Sun } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { useUiStore } from '@/store/uiStore'
 
 export function Header() {
+  const shouldReduceMotion = useReducedMotion()
   const theme = useUiStore((state) => state.theme)
   const toggleTheme = useUiStore((state) => state.toggleTheme)
   const ThemeIcon = theme === 'dark' ? Sun : Moon
@@ -35,10 +36,14 @@ export function Header() {
           role="status"
         >
           <motion.span
-            className="h-2.5 w-2.5 rounded-full bg-[var(--dashboard-success)] shadow-[0_0_12px_var(--dashboard-success)]"
+            className="h-2 w-2 rounded-full bg-[var(--dashboard-success)]"
             aria-hidden="true"
-            animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 2, ease: 'easeInOut', repeat: Infinity }}
+            animate={shouldReduceMotion ? { opacity: 1 } : { opacity: [0.76, 1, 0.76] }}
+            transition={
+              shouldReduceMotion
+                ? undefined
+                : { duration: 2, ease: 'easeInOut', repeat: Infinity }
+            }
           />
           AI Infrastructure Online
         </div>

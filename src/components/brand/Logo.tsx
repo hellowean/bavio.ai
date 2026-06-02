@@ -1,56 +1,42 @@
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
-
-import bavioLogo from '@/assets/bavio-logo-clear.png'
+import bavioLogoOnDark from '@/assets/bavio-logo-on-dark.png'
+import bavioLogoOnLight from '@/assets/bavio-logo-on-light.png'
 import { cn } from '@/lib/utils'
+import { useUiStore } from '@/store/uiStore'
 
 type LogoProps = {
   size?: number
   className?: string
   imageClassName?: string
-  breathe?: boolean
-  rotateOnScroll?: boolean
 }
 
-export function Logo({
-  breathe = true,
-  className,
-  imageClassName,
-  rotateOnScroll = false,
-  size = 32,
-}: LogoProps) {
-  const shouldReduceMotion = useReducedMotion()
-  const { scrollYProgress } = useScroll()
-  const scrollRotation = useTransform(scrollYProgress, [0, 0.5, 1], [0, 180, 360])
-  const enableBreathing = breathe && !shouldReduceMotion
-  const enableScrollRotation = rotateOnScroll && !shouldReduceMotion
+export function Logo({ className, imageClassName, size = 32 }: LogoProps) {
+  const theme = useUiStore((state) => state.theme)
+  const imageClasses = cn(
+    'absolute inset-0 h-full w-full select-none object-contain transition-opacity duration-200 ease-in-out [image-rendering:auto]',
+    imageClassName,
+  )
 
   return (
-    <motion.span
+    <span
       className={cn(
-        'inline-flex shrink-0 transform-gpu items-center justify-center overflow-visible rounded-lg border border-transparent bg-transparent will-change-transform',
+        'relative inline-flex shrink-0 items-center justify-center overflow-visible bg-transparent opacity-100 transition-opacity duration-150 ease-in-out hover:opacity-85',
         className,
       )}
-      animate={enableBreathing ? { scale: [1, 1.04, 1] } : { scale: 1 }}
-      style={{ height: size, rotate: enableScrollRotation ? scrollRotation : 0, width: size }}
-      transition={
-        enableBreathing
-          ? {
-              duration: 3,
-              ease: 'easeInOut',
-              repeat: Infinity,
-            }
-          : undefined
-      }
+      style={{ height: size, width: size }}
     >
       <img
         alt="Bavio"
-        className={cn(
-          'h-full w-full select-none object-contain drop-shadow-[0_0_8px_rgba(99,102,241,0.22)] [image-rendering:auto]',
-          imageClassName,
-        )}
+        className={cn(imageClasses, theme === 'dark' ? 'opacity-100' : 'opacity-0')}
         draggable={false}
-        src={bavioLogo}
+        src={bavioLogoOnDark}
       />
-    </motion.span>
+      <img
+        alt=""
+        aria-hidden="true"
+        className={cn(imageClasses, theme === 'light' ? 'opacity-100' : 'opacity-0')}
+        draggable={false}
+        src={bavioLogoOnLight}
+      />
+    </span>
   )
 }

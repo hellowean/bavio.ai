@@ -60,10 +60,12 @@ function LoginPage() {
     <MotionPage className="grid min-h-screen bg-[var(--dashboard-bg)] text-[var(--dashboard-text)] lg:grid-cols-[1.08fr_0.92fr]">
       <section className="relative flex min-h-[48vh] flex-col justify-between overflow-hidden border-b border-[var(--dashboard-border)] px-8 py-10 sm:px-12 lg:min-h-screen lg:border-b-0 lg:border-r lg:px-16 xl:px-20">
         <div className="relative flex items-center gap-3">
-          <Logo className="rounded-2xl shadow-[0_18px_44px_rgba(0,0,0,0.22)]" size={64} />
+          <Logo size={64} />
           <div>
             <p className="text-xl font-semibold tracking-tight">{APP_NAME}</p>
-            <p className="mt-1 text-sm text-[var(--dashboard-muted)]">AI Voice Platform</p>
+            <p className="mt-1 text-xs font-medium text-[var(--dashboard-muted)]">
+              Voice AI Infrastructure
+            </p>
           </div>
         </div>
 
