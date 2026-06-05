@@ -9,6 +9,7 @@ import { listContainer, listItem } from '@/lib/motion'
 import type { LeadEntry, LeadStatus } from '@/types'
 
 type LeadsTableProps = {
+  isFiltered?: boolean
   leads: LeadEntry[]
   onViewLead: (lead: LeadEntry) => void
 }
@@ -34,7 +35,10 @@ function getScoreTone(score: number): 'success' | 'warning' | 'error' {
   return 'error'
 }
 
-function LeadsTableComponent({ leads, onViewLead }: LeadsTableProps) {
+const actionTooltip = 'This action will be available in a future release.'
+const leadCaptureTooltip = 'Lead capture configuration will be available in a future release.'
+
+function LeadsTableComponent({ isFiltered = false, leads, onViewLead }: LeadsTableProps) {
   return (
     <section className="overflow-hidden rounded-xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface)] shadow-[var(--dashboard-card-shadow)]">
       <header className="flex items-center justify-between gap-4 border-b border-[var(--dashboard-border)] bg-[var(--dashboard-surface)] px-6 py-5">
@@ -102,22 +106,28 @@ function LeadsTableComponent({ leads, onViewLead }: LeadsTableProps) {
                         <Search className="h-3.5 w-3.5" aria-hidden="true" />
                         View
                       </Button>
-                      <Button
-                        className="h-8 px-2 text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)]"
-                        type="button"
-                        variant="ghost"
-                      >
-                        <StickyNote className="h-3.5 w-3.5" aria-hidden="true" />
-                        Note
-                      </Button>
-                      <Button
-                        className="h-8 px-2 text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)]"
-                        type="button"
-                        variant="ghost"
-                      >
-                        <CalendarPlus className="h-3.5 w-3.5" aria-hidden="true" />
-                        Follow-up
-                      </Button>
+                      <span className="inline-flex" title={actionTooltip}>
+                        <Button
+                          className="h-8 cursor-not-allowed px-2 text-[var(--dashboard-muted)]"
+                          disabled
+                          type="button"
+                          variant="ghost"
+                        >
+                          <StickyNote className="h-3.5 w-3.5" aria-hidden="true" />
+                          Note
+                        </Button>
+                      </span>
+                      <span className="inline-flex" title={actionTooltip}>
+                        <Button
+                          className="h-8 cursor-not-allowed px-2 text-[var(--dashboard-muted)]"
+                          disabled
+                          type="button"
+                          variant="ghost"
+                        >
+                          <CalendarPlus className="h-3.5 w-3.5" aria-hidden="true" />
+                          Follow-up
+                        </Button>
+                      </span>
                     </div>
                   </td>
                 </motion.tr>
@@ -127,14 +137,22 @@ function LeadsTableComponent({ leads, onViewLead }: LeadsTableProps) {
                 <td className="px-5 py-6" colSpan={8}>
                   <EmptyState
                     action={
-                      <Button type="button" variant="secondary">
-                        <UserPlus className="h-4 w-4" aria-hidden="true" />
-                        Configure lead capture
-                      </Button>
+                      isFiltered ? undefined : (
+                        <span className="inline-flex" title={leadCaptureTooltip}>
+                          <Button className="cursor-not-allowed" disabled type="button" variant="secondary">
+                            <UserPlus className="h-4 w-4" aria-hidden="true" />
+                            Configure lead capture
+                          </Button>
+                        </span>
+                      )
                     }
-                    description="Leads appear here when your AI agents collect caller information."
+                    description={
+                      isFiltered
+                        ? 'Try a different name, phone number, email, intent, or status.'
+                        : 'Leads appear here when your AI agents collect caller information.'
+                    }
                     icon={<UserPlus className="h-5 w-5" aria-hidden="true" />}
-                    title="No leads captured yet"
+                    title={isFiltered ? 'No leads found' : 'No leads captured yet'}
                   />
                 </td>
               </tr>

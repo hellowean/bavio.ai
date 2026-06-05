@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { fieldClass, labelClass, sectionCardClass } from '@/components/settings/settingsStyles'
 import type { UserProfileSettings } from '@/types'
 
@@ -31,19 +32,29 @@ export function ProfileSettings({ initialProfile, onSave }: ProfileSettingsProps
           <input className={fieldClass} value={profile.phone} onChange={(event) => updateProfile('phone', event.target.value)} />
         </Field>
         <Field label="Timezone">
-          <select className={fieldClass} value={profile.timezone} onChange={(event) => updateProfile('timezone', event.target.value)}>
-            <option>Asia/Kolkata</option>
-            <option>Asia/Singapore</option>
-            <option>Europe/London</option>
-            <option>America/New_York</option>
-          </select>
+          <Select value={profile.timezone} onValueChange={(value) => updateProfile('timezone', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select timezone" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Asia/Kolkata">Asia/Kolkata</SelectItem>
+              <SelectItem value="Asia/Singapore">Asia/Singapore</SelectItem>
+              <SelectItem value="Europe/London">Europe/London</SelectItem>
+              <SelectItem value="America/New_York">America/New_York</SelectItem>
+            </SelectContent>
+          </Select>
         </Field>
         <Field label="Language">
-          <select className={fieldClass} value={profile.language} onChange={(event) => updateProfile('language', event.target.value)}>
-            <option>English (India)</option>
-            <option>English (US)</option>
-            <option>Hindi + English</option>
-          </select>
+          <Select value={profile.language} onValueChange={(value) => updateProfile('language', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select language" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="English (India)">English (India)</SelectItem>
+              <SelectItem value="English (US)">English (US)</SelectItem>
+              <SelectItem value="Hindi + English">Hindi + English</SelectItem>
+            </SelectContent>
+          </Select>
         </Field>
       </div>
       <div className="mt-6">

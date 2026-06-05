@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import type { VoiceAgent } from '@/types'
 
 type CreateAgentModalProps = {
@@ -31,6 +32,8 @@ const inputClass =
 
 const textareaClass =
   'min-h-28 w-full rounded-md border border-[var(--dashboard-border)] bg-transparent px-3 py-3 text-sm text-[var(--dashboard-text)] outline-none transition placeholder:text-[var(--dashboard-muted)] focus:border-[var(--dashboard-accent)] focus:ring-2 focus:ring-[color:var(--dashboard-accent)]/20'
+
+const selectTriggerClass = 'w-full rounded-md'
 
 export function CreateAgentModal({ open, onClose, onCreate }: CreateAgentModalProps) {
   const [stepIndex, setStepIndex] = useState(0)
@@ -162,23 +165,29 @@ export function CreateAgentModal({ open, onClose, onCreate }: CreateAgentModalPr
                 />
               </Field>
               <Field label="Language">
-                <select className={inputClass} value={form.language} onChange={(event) => updateForm('language', event.target.value)}>
-                  <option>English (India)</option>
-                  <option>English (US)</option>
-                  <option>Hindi + English</option>
-                </select>
+                <Select value={form.language} onValueChange={(value) => updateForm('language', value)}>
+                  <SelectTrigger className={selectTriggerClass}>
+                    <SelectValue placeholder="Select language" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="English (India)">English (India)</SelectItem>
+                    <SelectItem value="English (US)">English (US)</SelectItem>
+                    <SelectItem value="Hindi + English">Hindi + English</SelectItem>
+                  </SelectContent>
+                </Select>
               </Field>
               <Field label="Industry template">
-                <select
-                  className={inputClass}
-                  value={form.industryTemplate}
-                  onChange={(event) => updateForm('industryTemplate', event.target.value)}
-                >
-                  <option>SaaS Sales</option>
-                  <option>Customer Support</option>
-                  <option>Healthcare Scheduling</option>
-                  <option>Real Estate Leads</option>
-                </select>
+                <Select value={form.industryTemplate} onValueChange={(value) => updateForm('industryTemplate', value)}>
+                  <SelectTrigger className={selectTriggerClass}>
+                    <SelectValue placeholder="Select template" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="SaaS Sales">SaaS Sales</SelectItem>
+                    <SelectItem value="Customer Support">Customer Support</SelectItem>
+                    <SelectItem value="Healthcare Scheduling">Healthcare Scheduling</SelectItem>
+                    <SelectItem value="Real Estate Leads">Real Estate Leads</SelectItem>
+                  </SelectContent>
+                </Select>
               </Field>
             </div>
           ) : null}
@@ -186,20 +195,30 @@ export function CreateAgentModal({ open, onClose, onCreate }: CreateAgentModalPr
           {currentStep === 'Voice' ? (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Field label="Voice selector">
-                <select className={inputClass} value={form.voice} onChange={(event) => updateForm('voice', event.target.value)}>
-                  <option>Maya - Warm</option>
-                  <option>Rohan - Calm</option>
-                  <option>Ava - Professional</option>
-                  <option>Noah - Energetic</option>
-                </select>
+                <Select value={form.voice} onValueChange={(value) => updateForm('voice', value)}>
+                  <SelectTrigger className={selectTriggerClass}>
+                    <SelectValue placeholder="Select voice" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Maya - Warm">Maya - Warm</SelectItem>
+                    <SelectItem value="Rohan - Calm">Rohan - Calm</SelectItem>
+                    <SelectItem value="Ava - Professional">Ava - Professional</SelectItem>
+                    <SelectItem value="Noah - Energetic">Noah - Energetic</SelectItem>
+                  </SelectContent>
+                </Select>
               </Field>
               <Field label="Speaking pace">
-                <select className={inputClass} value={form.pace} onChange={(event) => updateForm('pace', event.target.value)}>
-                  <option>Slow</option>
-                  <option>Measured</option>
-                  <option>Balanced</option>
-                  <option>Fast</option>
-                </select>
+                <Select value={form.pace} onValueChange={(value) => updateForm('pace', value)}>
+                  <SelectTrigger className={selectTriggerClass}>
+                    <SelectValue placeholder="Select pace" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Slow">Slow</SelectItem>
+                    <SelectItem value="Measured">Measured</SelectItem>
+                    <SelectItem value="Balanced">Balanced</SelectItem>
+                    <SelectItem value="Fast">Fast</SelectItem>
+                  </SelectContent>
+                </Select>
               </Field>
             </div>
           ) : null}
@@ -222,16 +241,17 @@ export function CreateAgentModal({ open, onClose, onCreate }: CreateAgentModalPr
           {currentStep === 'Launch' ? (
             <div className="grid grid-cols-1 gap-4">
               <Field label="Phone number">
-                <select
-                  className={inputClass}
-                  value={form.phoneNumber}
-                  onChange={(event) => updateForm('phoneNumber', event.target.value)}
-                >
-                  <option>+91 80 4567 7741</option>
-                  <option>+91 80 4567 2801</option>
-                  <option>+91 80 4567 6409</option>
-                  <option>Unassigned</option>
-                </select>
+                <Select value={form.phoneNumber} onValueChange={(value) => updateForm('phoneNumber', value)}>
+                  <SelectTrigger className={selectTriggerClass}>
+                    <SelectValue placeholder="Select phone number" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="+91 80 4567 7741">+91 80 4567 7741</SelectItem>
+                    <SelectItem value="+91 80 4567 2801">+91 80 4567 2801</SelectItem>
+                    <SelectItem value="+91 80 4567 6409">+91 80 4567 6409</SelectItem>
+                    <SelectItem value="Unassigned">Unassigned</SelectItem>
+                  </SelectContent>
+                </Select>
               </Field>
               <div className="rounded-md border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-raised)] p-4">
                 <h3 className="text-sm font-semibold text-[var(--dashboard-text)]">Launch checklist</h3>

@@ -2,18 +2,20 @@ import { CheckCircle2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { login, loginWithGoogle } from '@/api/auth'
+import { login } from '@/api/auth'
 import { Logo } from '@/components/brand/Logo'
 import LoginCard from '@/components/auth/LoginCard'
 import { MotionPage } from '@/components/layout/MotionPage'
 import { APP_NAME } from '@/lib/constants'
 import { useAuthStore } from '@/store/authStore'
+import { useToastStore } from '@/store/toastStore'
 import { useUiStore } from '@/store/uiStore'
 
 const loginFeatures = ['Monitor calls', 'Capture leads', 'Track AI usage', 'Manage voice agents']
 
 function LoginPage() {
   const navigate = useNavigate()
+  const addToast = useToastStore((state) => state.addToast)
   const setSession = useAuthStore((state) => state.setSession)
   const theme = useUiStore((state) => state.theme)
   const [authError, setAuthError] = useState<string | null>(null)
@@ -40,20 +42,12 @@ function LoginPage() {
     }
   }
 
-  const completeGoogleSignIn = async () => {
+  const completeGoogleSignIn = () => {
     setAuthError(null)
-    setIsSubmitting(true)
-
-    try {
-      const session = await loginWithGoogle()
-
-      setSession(session.user, session.token)
-      navigate('/overview', { replace: true })
-    } catch (error) {
-      setAuthError(error instanceof Error ? error.message : 'Unable to continue with Google.')
-    } finally {
-      setIsSubmitting(false)
-    }
+    addToast({
+      title: 'Google sign-in will be available in beta.',
+      tone: 'warning',
+    })
   }
 
   return (

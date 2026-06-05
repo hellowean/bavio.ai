@@ -29,14 +29,6 @@ export async function login(email: string, password: string): Promise<AuthSessio
   return cloneMockData(currentSession)
 }
 
-export async function loginWithGoogle(): Promise<AuthSession> {
-  await simulateApiDelay(180)
-
-  currentSession = createMockSession('google.user@bavio.ai')
-
-  return cloneMockData(currentSession)
-}
-
 export async function logout(): Promise<void> {
   await simulateApiDelay(60)
 

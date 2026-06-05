@@ -36,6 +36,9 @@ function getScoreTone(score: number): 'success' | 'warning' | 'error' {
   return 'error'
 }
 
+const actionTooltip = 'This action will be available in a future release.'
+const sourceCallTooltip = 'Source call linking will be available in a future release.'
+
 export function LeadDetailDrawer({ lead, loading = false, open, onClose }: LeadDetailDrawerProps) {
   if (loading && open) {
     return <DetailDrawerSkeleton ariaLabel="Lead details" onClose={onClose} />
@@ -104,9 +107,15 @@ export function LeadDetailDrawer({ lead, loading = false, open, onClose }: LeadD
 
           <section className="mt-5 rounded-xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-raised)] p-4">
             <p className="text-xs font-medium uppercase tracking-[0.12em] text-[var(--dashboard-muted)]">Source call</p>
-            <button className="mt-2 text-sm font-semibold text-[var(--dashboard-accent)]" type="button">
-              Open {lead.sourceCallId}
-            </button>
+            <span className="mt-2 inline-flex" title={sourceCallTooltip}>
+              <button
+                className="text-sm font-semibold text-[var(--dashboard-muted)] opacity-75"
+                disabled
+                type="button"
+              >
+                Open {lead.sourceCallId}
+              </button>
+            </span>
           </section>
 
           <DrawerSection title="AI Summary">
@@ -144,18 +153,24 @@ export function LeadDetailDrawer({ lead, loading = false, open, onClose }: LeadD
           </DrawerSection>
 
           <section className="mt-5 grid grid-cols-1 gap-3">
-            <Button className="justify-start" type="button">
-              <FileText className="h-4 w-4" aria-hidden="true" />
-              Add Note
-            </Button>
-            <Button className="justify-start" type="button" variant="secondary">
-              <ClipboardList className="h-4 w-4" aria-hidden="true" />
-              Change Status
-            </Button>
-            <Button className="justify-start" type="button" variant="secondary">
-              <CalendarPlus className="h-4 w-4" aria-hidden="true" />
-              Schedule Follow-up
-            </Button>
+            <span className="block" title={actionTooltip}>
+              <Button className="w-full cursor-not-allowed justify-start" disabled type="button">
+                <FileText className="h-4 w-4" aria-hidden="true" />
+                Add Note
+              </Button>
+            </span>
+            <span className="block" title={actionTooltip}>
+              <Button className="w-full cursor-not-allowed justify-start" disabled type="button" variant="secondary">
+                <ClipboardList className="h-4 w-4" aria-hidden="true" />
+                Change Status
+              </Button>
+            </span>
+            <span className="block" title={actionTooltip}>
+              <Button className="w-full cursor-not-allowed justify-start" disabled type="button" variant="secondary">
+                <CalendarPlus className="h-4 w-4" aria-hidden="true" />
+                Schedule Follow-up
+              </Button>
+            </span>
           </section>
         </div>
           </motion.aside>

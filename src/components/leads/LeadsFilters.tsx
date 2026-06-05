@@ -1,11 +1,31 @@
 import { Download, Search } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-const selectClass =
-  'h-10 rounded-lg border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-raised)]/70 px-3 text-sm font-medium text-[var(--dashboard-muted)] outline-none transition hover:border-[color:var(--dashboard-accent)]/25 focus:border-[var(--dashboard-accent)] focus:[box-shadow:var(--dashboard-focus-ring)]'
+type LeadsFiltersProps = {
+  agentFilter: string
+  searchQuery: string
+  scoreFilter: string
+  statusFilter: string
+  onAgentFilterChange: (agent: string) => void
+  onExportPdf: () => void
+  onSearchQueryChange: (query: string) => void
+  onScoreFilterChange: (score: string) => void
+  onStatusFilterChange: (status: string) => void
+}
 
-export function LeadsFilters() {
+export function LeadsFilters({
+  agentFilter,
+  onAgentFilterChange,
+  onExportPdf,
+  onScoreFilterChange,
+  onSearchQueryChange,
+  onStatusFilterChange,
+  scoreFilter,
+  searchQuery,
+  statusFilter,
+}: LeadsFiltersProps) {
   return (
     <section className="rounded-xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface)] p-4 shadow-[var(--dashboard-card-shadow)]">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
@@ -20,42 +40,55 @@ export function LeadsFilters() {
             className="h-10 w-full rounded-lg border border-[var(--dashboard-border)] bg-[var(--dashboard-surface-raised)]/70 pl-10 pr-3 text-sm text-[var(--dashboard-text)] outline-none transition placeholder:text-[var(--dashboard-subtle)] hover:border-[color:var(--dashboard-accent)]/25 focus:border-[var(--dashboard-accent)] focus:[box-shadow:var(--dashboard-focus-ring)]"
             placeholder="Search leads, phone numbers, intent..."
             type="search"
+            value={searchQuery}
+            onChange={(event) => onSearchQueryChange(event.target.value)}
           />
         </label>
 
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 xl:flex xl:shrink-0">
-          <select aria-label="Status" className={`${selectClass} w-full xl:w-36`} defaultValue="all">
-            <option value="all">All statuses</option>
-            <option value="new">New</option>
-            <option value="contacted">Contacted</option>
-            <option value="qualified">Qualified</option>
-            <option value="closed-won">Closed Won</option>
-            <option value="closed-lost">Closed Lost</option>
-            <option value="junk">Junk</option>
-          </select>
+          <Select value={statusFilter} onValueChange={onStatusFilterChange}>
+            <SelectTrigger aria-label="Status" className="w-full xl:w-36">
+              <SelectValue placeholder="All statuses" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="New">New</SelectItem>
+              <SelectItem value="Contacted">Contacted</SelectItem>
+              <SelectItem value="Qualified">Qualified</SelectItem>
+              <SelectItem value="Closed Won">Closed Won</SelectItem>
+              <SelectItem value="Closed Lost">Closed Lost</SelectItem>
+              <SelectItem value="Junk">Junk</SelectItem>
+            </SelectContent>
+          </Select>
 
-          <select aria-label="Agent" className={`${selectClass} w-full xl:w-44`} defaultValue="all">
-            <option value="all">All agents</option>
-            <option value="sales">Sales Assistant</option>
-            <option value="support">Support Bot</option>
-            <option value="lead">Lead Qualifier</option>
-            <option value="scheduler">Scheduler</option>
-          </select>
+          <Select value={agentFilter} onValueChange={onAgentFilterChange}>
+            <SelectTrigger aria-label="Agent" className="w-full xl:w-44">
+              <SelectValue placeholder="All agents" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All agents</SelectItem>
+              <SelectItem value="Sales Assistant">Sales Assistant</SelectItem>
+              <SelectItem value="Support Bot">Support Bot</SelectItem>
+              <SelectItem value="Lead Qualifier">Lead Qualifier</SelectItem>
+              <SelectItem value="Scheduler">Scheduler</SelectItem>
+            </SelectContent>
+          </Select>
 
-          <select aria-label="Score" className={`${selectClass} w-full xl:w-36`} defaultValue="all">
-            <option value="all">All scores</option>
-            <option value="high">8-10 High</option>
-            <option value="medium">5-7 Medium</option>
-            <option value="low">1-4 Low</option>
-          </select>
+          <Select value={scoreFilter} onValueChange={onScoreFilterChange}>
+            <SelectTrigger aria-label="Score" className="w-full xl:w-36">
+              <SelectValue placeholder="All scores" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All scores</SelectItem>
+              <SelectItem value="high">8-10 High</SelectItem>
+              <SelectItem value="medium">5-7 Medium</SelectItem>
+              <SelectItem value="low">1-4 Low</SelectItem>
+            </SelectContent>
+          </Select>
 
-          <Button
-            className="h-10 px-4"
-            type="button"
-            variant="secondary"
-          >
+          <Button className="h-10 px-4" type="button" variant="secondary" onClick={onExportPdf}>
             <Download className="h-4 w-4" aria-hidden="true" />
-            Export
+            Export PDF
           </Button>
         </div>
       </div>

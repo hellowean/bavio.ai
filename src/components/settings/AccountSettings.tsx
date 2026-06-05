@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { fieldClass, labelClass, sectionCardClass } from '@/components/settings/settingsStyles'
 import type { AccountSettingsData } from '@/types'
 
@@ -28,13 +29,18 @@ export function AccountSettings({ initialAccount }: AccountSettingsProps) {
           />
         </Field>
         <Field label="Industry">
-          <select className={fieldClass} value={account.industry} onChange={(event) => updateAccount('industry', event.target.value)}>
-            <option>SaaS</option>
-            <option>Healthcare</option>
-            <option>Real Estate</option>
-            <option>Financial Services</option>
-            <option>Ecommerce</option>
-          </select>
+          <Select value={account.industry} onValueChange={(value) => updateAccount('industry', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select industry" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="SaaS">SaaS</SelectItem>
+              <SelectItem value="Healthcare">Healthcare</SelectItem>
+              <SelectItem value="Real Estate">Real Estate</SelectItem>
+              <SelectItem value="Financial Services">Financial Services</SelectItem>
+              <SelectItem value="Ecommerce">Ecommerce</SelectItem>
+            </SelectContent>
+          </Select>
         </Field>
         <Field label="Website">
           <input className={fieldClass} value={account.website} onChange={(event) => updateAccount('website', event.target.value)} />

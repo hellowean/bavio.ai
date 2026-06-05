@@ -9,7 +9,7 @@ export async function getLeads(filters: LeadsFilters = {}): Promise<LeadEntry[]>
   const leads = leadsData.filter((lead) => {
     const matchesQuery =
       !query ||
-      [lead.name, lead.phone, lead.intent, lead.summary]
+      [lead.name, lead.phone, lead.email, lead.intent, lead.status, lead.sourceAgent, lead.summary]
         .join(' ')
         .toLowerCase()
         .includes(query)

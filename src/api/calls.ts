@@ -9,7 +9,15 @@ export async function getCalls(filters: CallsFilters = {}): Promise<CallLogEntry
   const calls = callsLogData.filter((call) => {
     const matchesQuery =
       !query ||
-      [call.callerName, call.callerNumber, call.agent, call.summary]
+      [
+        call.callerName,
+        call.callerNumber,
+        call.agent,
+        call.resolution,
+        call.sentiment,
+        call.summary,
+        ...call.transcript.map((message) => message.message),
+      ]
         .join(' ')
         .toLowerCase()
         .includes(query)

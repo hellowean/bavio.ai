@@ -10,6 +10,7 @@ import type { CallLogEntry, CallResolution, CallSentiment } from '@/types'
 
 type CallsTableProps = {
   calls: CallLogEntry[]
+  isFiltered?: boolean
   onViewCall: (call: CallLogEntry) => void
 }
 
@@ -26,7 +27,9 @@ const sentimentTone: Record<CallSentiment, 'success' | 'muted' | 'error'> = {
   Negative: 'error',
 }
 
-function CallsTableComponent({ calls, onViewCall }: CallsTableProps) {
+function CallsTableComponent({ calls, isFiltered = false, onViewCall }: CallsTableProps) {
+  const testCallTooltip = 'Test calls will be available in a future release.'
+
   return (
     <section className="overflow-hidden rounded-xl border border-[var(--dashboard-border)] bg-[var(--dashboard-surface)] shadow-[var(--dashboard-card-shadow)]">
       <header className="flex items-center justify-between gap-4 border-b border-[var(--dashboard-border)] bg-[var(--dashboard-surface)] px-6 py-5">
@@ -103,6 +106,7 @@ function CallsTableComponent({ calls, onViewCall }: CallsTableProps) {
                         className="h-8 px-2 text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)]"
                         type="button"
                         variant="ghost"
+                        onClick={() => onViewCall(call)}
                       >
                         <FileText className="h-3.5 w-3.5" aria-hidden="true" />
                         Transcript
@@ -111,6 +115,7 @@ function CallsTableComponent({ calls, onViewCall }: CallsTableProps) {
                         className="h-8 px-2 text-[var(--dashboard-muted)] hover:text-[var(--dashboard-text)]"
                         type="button"
                         variant="ghost"
+                        onClick={() => onViewCall(call)}
                       >
                         <PlayCircle className="h-3.5 w-3.5" aria-hidden="true" />
                         Recording
@@ -124,14 +129,22 @@ function CallsTableComponent({ calls, onViewCall }: CallsTableProps) {
                 <td className="px-5 py-6" colSpan={8}>
                   <EmptyState
                     action={
-                      <Button type="button" variant="secondary">
-                        <PhoneCall className="h-4 w-4" aria-hidden="true" />
-                        Make a test call
-                      </Button>
+                      isFiltered ? undefined : (
+                        <span className="inline-flex" title={testCallTooltip}>
+                          <Button className="cursor-not-allowed" disabled type="button" variant="secondary">
+                            <PhoneCall className="h-4 w-4" aria-hidden="true" />
+                            Make a test call
+                          </Button>
+                        </span>
+                      )
                     }
-                    description="AI-handled calls will appear here once your voice agents start receiving calls."
+                    description={
+                      isFiltered
+                        ? 'Try a different caller number, agent, status, or summary keyword.'
+                        : 'AI-handled calls will appear here once your voice agents start receiving calls.'
+                    }
                     icon={<PhoneCall className="h-5 w-5" aria-hidden="true" />}
-                    title="No calls yet"
+                    title={isFiltered ? 'No calls found' : 'No calls yet'}
                   />
                 </td>
               </tr>
